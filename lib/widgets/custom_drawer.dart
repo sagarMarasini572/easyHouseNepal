@@ -20,98 +20,100 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: GetBuilder<HomeController>(builder: (controller) {
-        return Column(
-          children: [
-            const SizedBox(
-              height: 40,
-            ),
-            SizedBox(
-              height: 150,
-              width: 150,
-              child:
-                  GetBuilder<ProfileController>(builder: (profileController) {
-                return ClipRRect(
-                    borderRadius: BorderRadius.circular(75),
-                    // child: const Icon(Icons.person, size: 100));
-                    child: Image(
-                      fit: BoxFit.cover,
-                      image: profileController.user.profileImage == ''
-                          ? NetworkImage(
-                              'https://ui-avatars.com/api/?background=random' +
-                                  profileController.user.fullName!,
-                            )
-                          : NetworkImage(
-                              baseUrl + profileController.user.profileImage!,
-                            ),
-                    ));
-                // child: profileController.user.profileImage == ''
-                //     ? const Icon(Icons.person, size: 100)
-                //     : Image(
-                //         fit: BoxFit.cover,
-                //         image: NetworkImage(
-                //           baseUrl + profileController.user.profileImage!,
-                //         ),
-                //       ));
-              }),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              controller.user.fullName!,
-              style: const TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 30,
-                color: Color(0xfa209fa8),
-                fontWeight: FontWeight.w700,
+      child: SingleChildScrollView(
+        child: GetBuilder<HomeController>(builder: (controller) {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 40,
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  drawerComponent('Home', FontAwesomeIcons.home, () {
-                    Get.toNamed(GetRoutes.home);
-                  }),
-                  controller.user.role == 'admin'
-                      ? adminDrawerItem()
-                      : customerDrawerItem(),
-                ],
-              ),
-            ),
-            drawerComponent('Sign Out', FontAwesomeIcons.signOutAlt, () {
-              showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        title: const Text('Sign Out?'),
-                        content:
-                            const Text('Are you sure you want to sign out?'),
-                        actions: [
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.red[700]),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text(
-                                'Cancel',
-                                style: TextStyle(color: Colors.white),
-                              )),
-                          ElevatedButton(
-                              onPressed: () async {
-                                await SharedPrefs().removeUser();
-                                Get.toNamed(GetRoutes.welcome);
-                              },
-                              child: const Text('Confirm'))
-                        ],
+              SizedBox(
+                height: 150,
+                width: 150,
+                child:
+                    GetBuilder<ProfileController>(builder: (profileController) {
+                  return ClipRRect(
+                      borderRadius: BorderRadius.circular(75),
+                      // child: const Icon(Icons.person, size: 100));
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: profileController.user.profileImage == ''
+                            ? NetworkImage(
+                                'https://ui-avatars.com/api/?background=random' +
+                                    profileController.user.fullName!,
+                              )
+                            : NetworkImage(
+                                baseUrl + profileController.user.profileImage!,
+                              ),
                       ));
-            })
-          ],
-        );
-      }),
+                  // child: profileController.user.profileImage == ''
+                  //     ? const Icon(Icons.person, size: 100)
+                  //     : Image(
+                  //         fit: BoxFit.cover,
+                  //         image: NetworkImage(
+                  //           baseUrl + profileController.user.profileImage!,
+                  //         ),
+                  //       ));
+                }),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                controller.user.fullName!,
+                style: const TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 30,
+                  color: Color(0xfa209fa8),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    drawerComponent('Home', FontAwesomeIcons.home, () {
+                      Get.toNamed(GetRoutes.home);
+                    }),
+                    controller.user.role == 'admin'
+                        ? adminDrawerItem()
+                        : customerDrawerItem(),
+                  ],
+                ),
+              ),
+              drawerComponent('Sign Out', FontAwesomeIcons.signOutAlt, () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: const Text('Sign Out?'),
+                          content:
+                              const Text('Are you sure you want to sign out?'),
+                          actions: [
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.red[700]),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  await SharedPrefs().removeUser();
+                                  Get.toNamed(GetRoutes.welcome);
+                                },
+                                child: const Text('Confirm'))
+                          ],
+                        ));
+              })
+            ],
+          );
+        }),
+      ),
     );
   }
 
@@ -147,7 +149,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   // defining admin Drawer Item
   Column adminDrawerItem() {
     return Column(children: [
-      
       drawerComponent('Add House', FontAwesomeIcons.houseUser, () {
         Get.toNamed(GetRoutes.addHouse);
       }),
